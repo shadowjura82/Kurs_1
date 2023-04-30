@@ -1,9 +1,10 @@
 package kurs1LowLevel;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class EmployeeBook {
-    Employee[] employees;
+    private Employee[] employees;
 
     public EmployeeBook(Employee[] employees) {
         this.employees = employees;
@@ -13,7 +14,8 @@ public class EmployeeBook {
     public String toString() {
         String result = "";
         for (Employee emp : employees)
-            result += "Ф.И.О.: " + emp.getFullName() + " Отдел: " + emp.getDepartment() + " Зарплата: " + emp.getSalary() + "\n";
+            if (emp != null)
+                result += "Ф.И.О.: " + emp.getFullName() + " Отдел: " + emp.getDepartment() + " Зарплата: " + emp.getSalary() + " " + emp.getId() + "\n";
         return result;
     }
 
@@ -115,5 +117,58 @@ public class EmployeeBook {
         for (Employee emp : employees)
             if (emp.getSalary() >= number)
                 System.out.println("ID: " + emp.getId() + " Ф.И.О.: " + emp.getFullName() + " Зарплата: " + emp.getSalary());
+    }
+
+    public void addEmployee(Employee employee) {
+        int index = nextAvailable();
+        employees[index] = employee;
+    }
+
+    public void deleteEmployee(String fullName) {
+        for (int i = 0; i < employees.length; i++)
+            if (employees[i] != null && employees[i].getFullName().equals(fullName)) employees[i] = null;
+    }
+
+    public void deleteEmployee(String fullName, int id) {
+        for (int i = 0; i < employees.length; i++)
+            if (employees[i] != null && employees[i].getFullName().equals(fullName) && employees[i].getId() == id)
+                employees[i] = null;
+    }
+
+    public void deleteEmployee(int id) {
+        for (int i = 0; i < employees.length; i++)
+            if (employees[i] != null && employees[i].getId() == id) employees[i] = null;
+    }
+
+    private int nextAvailable() {
+        for (int i = 0; i < employees.length; i++)
+            if (employees[i] == null)
+                return i;
+        Employee[] mas = new Employee[employees.length];
+        for (int i = 0; i < employees.length; i++)
+            mas[i] = employees[i];
+        employees = new Employee[employees.length + 1];
+        for (int i = 0; i < mas.length; i++)
+            employees[i] = mas[i];
+        return employees.length - 1;
+    }
+
+    public void changeEmployeeSalary(String fullName, int newSalary) {
+        for (Employee emp : employees)
+            if (emp != null && emp.getFullName().equals(fullName)) emp.setSalary(newSalary);
+    }
+
+    public void changeEmployeeDepartment(String fullName, int newDepartmentID) {
+        for (Employee emp : employees)
+            if (emp != null && emp.getFullName().equals(fullName)) emp.setDepartment(newDepartmentID);
+    }
+
+    public void fullNameByDepartment() {
+        String result;
+        for (int i = 1; i <= 5; i++) {
+            System.out.println("Список сотрудников отдела №" + i);
+            for (Employee emp : employees)
+                if (emp != null && emp.getDepartment() == i) System.out.println(emp.getFullName());
+        }
     }
 }

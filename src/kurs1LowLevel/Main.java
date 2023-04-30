@@ -22,6 +22,19 @@ public class Main {
         System.out.println("Обработка сотрудников 1-го отдела: ");
         employeeBook.departmentMethods(1);
         employeeBook.salaryAnalyzer(1000);
+
+        //Задачи самой высокой сложности
+        employeeBook.addEmployee(new Employee("NewName", 4, 2000));
+        System.out.println("Список всех сотрудников: \n" + employeeBook.toString());
+        employeeBook.deleteEmployee(3);
+        employeeBook.deleteEmployee("Name4", 5);
+        employeeBook.deleteEmployee("Name6");
+        employeeBook.addEmployee(new Employee("NewName222", 4, 2222));
+        System.out.println("Список всех сотрудников: \n" + employeeBook.toString());
+        employeeBook.changeEmployeeSalary("Name5", 6000000);
+        employeeBook.changeEmployeeDepartment("Name5", 33);
+        System.out.println("Список всех сотрудников: \n" + employeeBook.toString());
+        employeeBook.fullNameByDepartment();
     }
 
     public static void fillMass(Employee[] employees) {
