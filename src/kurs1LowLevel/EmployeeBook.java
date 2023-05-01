@@ -15,46 +15,54 @@ public class EmployeeBook {
         String result = "";
         for (Employee emp : employees)
             if (emp != null)
-                result += "Ф.И.О.: " + emp.getFullName() + " Отдел: " + emp.getDepartment() + " Зарплата: " + emp.getSalary() + " " + emp.getId() + "\n";
+                result += "Ф.И.О.: " + emp.getFullName() + " Отдел: " + emp.getDepartment() + " Зарплата: " +
+                        String.format("%.2f", emp.getSalary()) + "\n";
         return result;
     }
 
     public String toString(int departmentID) {
         String result = "";
         for (Employee emp : employees)
-            if (emp.getDepartment() == departmentID)
-                result += "Ф.И.О.: " + emp.getFullName() + " Зарплата: " + emp.getSalary() + "\n";
+            if (emp != null && emp.getDepartment() == departmentID)
+                result += "Ф.И.О.: " + emp.getFullName() + " Зарплата: " + String.format("%.2f", emp.getSalary()) + "\n";
         return result;
     }
 
-    public int salarySumm() {
+    public float salarySumm() {
         int summ = 0;
-        for (Employee emp : employees) summ += emp.getSalary();
+        for (Employee emp : employees)
+            if (emp != null)
+                summ += emp.getSalary();
         return summ;
     }
 
     public Employee minSalaryEmployee() {
         int min = 0;
         for (int i = 0; i < employees.length; i++)
-            if (employees[i].getSalary() < employees[min].getSalary()) min = i;
-        return employees[min];
+            if (employees[i] != null && employees[i].getSalary() < employees[min].getSalary()) min = i;
+        return employees[0];
     }
 
     public Employee maxSalaryEmployee() {
         int max = 0;
         for (int i = 0; i < employees.length; i++)
-            if (employees[i].getSalary() > employees[max].getSalary()) max = i;
+            if (employees[i] != null && employees[i].getSalary() > employees[max].getSalary()) max = i;
         return employees[max];
     }
 
     public float averageSalary() {
-        return (float) salarySumm() / employees.length;
+        int count = 0;
+        for (Employee emp : employees) {
+            if (emp != null) count++;
+        }
+        return (float) salarySumm() / count;
     }
 
     public String getFullName() {
         String result = "";
         for (Employee emp : employees)
-            result += emp.getFullName() + "\n";
+            if (emp != null)
+                result += emp.getFullName() + "\n";
         return result;
     }
 
@@ -62,13 +70,13 @@ public class EmployeeBook {
         if (percent < 0) {
             percent = Math.abs(percent);
             for (Employee emp : employees)
-                //тут может быть не точность в расчетах т.к. нужно приводить к типу float, но т.к. по
-                // требованиям зарплата должна быть int, я не делал приведение типов
-                emp.setSalary(emp.getSalary() - (emp.getSalary() / 100 * percent));
+                if (emp != null)
+                    emp.setSalary(emp.getSalary() - (emp.getSalary() / 100 * percent));
         } else {
             percent = Math.abs(percent);
             for (Employee emp : employees)
-                emp.setSalary(emp.getSalary() + (emp.getSalary() / 100 * percent));
+                if (emp != null)
+                    emp.setSalary(emp.getSalary() + (emp.getSalary() / 100 * percent));
         }
     }
 
@@ -76,14 +84,12 @@ public class EmployeeBook {
         if (percent < 0) {
             percent = Math.abs(percent);
             for (Employee emp : employees)
-                //тут может быть не точность в расчетах т.к. нужно приводить к типу float, но т.к. по
-                // требованиям зарплата должна быть int, я не делал приведение типов
-                if (emp.getDepartment() == departmentID)
+                if (emp != null && emp.getDepartment() == departmentID)
                     emp.setSalary(emp.getSalary() - (emp.getSalary() / 100 * percent));
         } else {
             percent = Math.abs(percent);
             for (Employee emp : employees)
-                if (emp.getDepartment() == departmentID)
+                if (emp != null && emp.getDepartment() == departmentID)
                     emp.setSalary(emp.getSalary() + (emp.getSalary() / 100 * percent));
         }
     }
@@ -91,10 +97,11 @@ public class EmployeeBook {
     public void departmentMethods(int departmentID) {
         int count = 0;
         int index = 0;
-        for (Employee emp : employees) if (emp.getDepartment() == departmentID) count++;
+        for (Employee emp : employees)
+            if (emp != null && emp.getDepartment() == departmentID) count++;
         Employee[] bufEmpMass = new Employee[count];
         for (Employee employee : employees)
-            if (employee.getDepartment() == departmentID) {
+            if (employee != null && employee.getDepartment() == departmentID) {
                 bufEmpMass[index] = employee;
                 index++;
             }
@@ -111,12 +118,14 @@ public class EmployeeBook {
     public void salaryAnalyzer(int number) {
         System.out.println("Cотрудники с зарплатой меньше числа:");
         for (Employee emp : employees)
-            if (emp.getSalary() < number)
-                System.out.println("ID: " + emp.getId() + " Ф.И.О.: " + emp.getFullName() + " Зарплата: " + emp.getSalary());
+            if (emp != null && emp.getSalary() < number)
+                System.out.println("ID: " + emp.getId() + " Ф.И.О.: " + emp.getFullName() + " Зарплата: " +
+                        String.format("%.2f", emp.getSalary()));
         System.out.println("Cотрудники с зарплатой больше (или равно) числа:");
         for (Employee emp : employees)
-            if (emp.getSalary() >= number)
-                System.out.println("ID: " + emp.getId() + " Ф.И.О.: " + emp.getFullName() + " Зарплата: " + emp.getSalary());
+            if (emp != null && emp.getSalary() >= number)
+                System.out.println("ID: " + emp.getId() + " Ф.И.О.: " + emp.getFullName() + " Зарплата: " +
+                        String.format("%.2f", emp.getSalary()));
     }
 
     public void addEmployee(Employee employee) {

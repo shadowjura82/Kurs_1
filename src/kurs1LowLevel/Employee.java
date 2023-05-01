@@ -3,7 +3,7 @@ package kurs1LowLevel;
 public class Employee {
     private String fullName;
     private int department;
-    private int salary;
+    private float salary;
     private int id;
 
     public static int counterId = 1;
@@ -16,7 +16,7 @@ public class Employee {
         return department;
     }
 
-    public int getSalary() {
+    public float getSalary() {
         return salary;
     }
 
@@ -28,7 +28,7 @@ public class Employee {
         this.department = department;
     }
 
-    public void setSalary(int salary) {
+    public void setSalary(float salary) {
         this.salary = salary;
     }
 

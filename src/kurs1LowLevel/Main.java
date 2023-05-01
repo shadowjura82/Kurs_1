@@ -40,7 +40,8 @@ public class Main {
     public static void fillMass(Employee[] employees) {
         Random x = new Random();
         for (int i = 0; i < employees.length; i++) {
-            employees[i] = new Employee("Name" + i, x.nextInt(5) + 1, 1000 + i * 10);
+            //employees[i] = new Employee("Name" + i, x.nextInt(5) + 1, 1000 + i * 10);
+            employees[i] = new Employee("Name" + i, x.nextInt(5) + 1, x.nextInt(1000));
         }
     }
 }
